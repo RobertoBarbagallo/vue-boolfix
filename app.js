@@ -305,12 +305,15 @@ new Vue({
       
       render(){
           finalList = this.movieList.concat(this.seriesList)
-          this.finalList = finalList
-          for (let i = 0; i < this.finalList.length; i++) {
-            const film = this.finalList[i];
+          finalList.forEach(film =>{
             this.$set(film, "flags", [])
-          }
+            this.$set(film, "fullStars", 0)
+            this.$set(film, "emptyStars", 0)
+
+          })
+          this.finalList = finalList
           this.myFlagAssign()
+          this.starAssign()
       },
 
       myFlagAssign(){
@@ -324,11 +327,16 @@ new Vue({
             if(language.startsWith(film.original_language)){
               film.flags.push("flag-icon-" + language.substring(film.original_language.length + 1).toLowerCase())    
             }
-          }
-      
-          
+          }    
         }
-      },      
+      },  
+      
+      starAssign(){
+        this.finalList.forEach(film =>{
+          film.fullStars = Math.ceil(film.vote_average / 2)
+          film.emptyStars = 5 - film.fullStars
+        })
+      },
 
       doSearch(){
         this.finalList = ""
