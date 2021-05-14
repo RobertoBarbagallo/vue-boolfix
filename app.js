@@ -304,11 +304,10 @@ new Vue({
               })
               }
             }
-            if(this.ajaxLenght === 0){
+            if(this.ajaxLenght == 0){
               this.render()
             }
         })
-          // setTimeout(this.render, 2000)
       },
       
       render(){
@@ -317,7 +316,6 @@ new Vue({
             this.$set(film, "flags", [])
             this.$set(film, "fullStars", 0)
             this.$set(film, "emptyStars", 0)
-
           })
           this.finalList = finalList
           this.myFlagAssign()
