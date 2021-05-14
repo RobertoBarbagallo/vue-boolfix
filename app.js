@@ -47,14 +47,11 @@ new Vue({
         ca_ES: "Catalan (Spain)",
         chr_US: "Cherokee (United States)",
         cgg_UG: "Chiga (Uganda)",
-        zh_Hans: "Chinese (Simplified Han)",
-        zh_Hans_CN: "Chinese (Simplified Han, China)",
-        zh_Hans_HK: "Chinese (Simplified Han, Hong Kong SAR China)",
-        zh_Hans_MO: "Chinese (Simplified Han, Macau SAR China)",
-        zh_Hans_SG: "Chinese (Simplified Han, Singapore)",
-        zh_Hant_HK: "Chinese (Traditional Han, Hong Kong SAR China)",
-        zh_Hant_MO: "Chinese (Traditional Han, Macau SAR China)",
-        zh_Hant_TW: "Chinese (Traditional Han, Taiwan)",
+        zh_CN: "Chinese (Simplified Han, China)",
+        zh_HK: "Chinese (Simplified Han, Hong Kong SAR China)",
+        zh_MO: "Chinese (Simplified Han, Macau SAR China)",
+        zh_SG: "Chinese (Simplified Han, Singapore)",
+        zh_HK: "Chinese (Traditional Han, Hong Kong SAR China)",
         kw_GB: "Cornish (United Kingdom)",
         hr_HR: "Croatian (Croatia)",
         cs_CZ: "Czech (Czech Republic)",
@@ -279,7 +276,7 @@ new Vue({
 
       makeAxiosSearch(searchType){
 
-        this.ajaxLenght++
+        this.ajaxLength++
       
         const axiosPar = {
           params: {
@@ -289,7 +286,7 @@ new Vue({
           }
         }
         axios.get('https://api.themoviedb.org/3/search/' + searchType, axiosPar).then((resp) => {
-            this.ajaxLenght--
+            this.ajaxLength--
             if( searchType === "movie"){
 
               if(resp.data.results){
@@ -304,7 +301,7 @@ new Vue({
               })
               }
             }
-            if(this.ajaxLenght == 0){
+            if(this.ajaxLength == 0){
               this.render()
             }
         })
@@ -346,7 +343,7 @@ new Vue({
 
       doSearch(){
         this.finalList = ""
-        this.ajaxLenght = 0
+        this.ajaxLength = 0
         this.makeAxiosSearch("movie")
         this.makeAxiosSearch("tv")
         this.textToSearch = "" 

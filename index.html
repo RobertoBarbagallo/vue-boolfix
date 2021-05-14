@@ -33,22 +33,13 @@
                         <p>
                             <i v-for="fullstar in result.fullStars" class="fa fa-star" aria-hidden="true"></i><i v-for="emptystar in result.emptyStars" class="fa fa-star-o" aria-hidden="true"></i>
                         </p>
+                        <!-- <p>Nazioni compatibili con la lingua originale</p>
+                        <p v-for="flag in result.flags">
+                            <span class="flag-icon" :class="flag"></span>
+                        </p> -->
                         <p class="overview" v-if="result.overview"> <strong>Recensione:</strong>  {{result.overview}}</p>
                     </div>
-                </div>
-             
-                <!-- <p>Titolo: {{result.title}}</p>
-                <p>Titolo originale: {{result.original_title}}</p>
-                <p>Lingua: {{result.original_language}}</p>
-                <p>
-                    <i v-for="fullstar in result.fullStars" class="fa fa-star" aria-hidden="true"></i><i v-for="emptystar in result.emptyStars" class="fa fa-star-o" aria-hidden="true"></i>
-
-                </p> -->
-                <!-- <p>Nazioni compatibili con la lingua originale</p>
-                <p v-for="flag in result.flags">
-                    <span class="flag-icon" :class="flag"></span>
-                </p> -->
-                
+                </div>    
             </div>
         </main>
     </div>
