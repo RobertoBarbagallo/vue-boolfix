@@ -10,6 +10,7 @@ new Vue({
       finalList: "",
       posterUri: "https://image.tmdb.org/t/p",
       posterSize: "/w342",
+      ajaxLenght: 0,
       languages_by_locale: {
         af_NA: "Afrikaans (Namibia)",
         af_ZA: "Afrikaans (South Africa)",
@@ -277,6 +278,8 @@ new Vue({
     methods: {
 
       makeAxiosSearch(searchType){
+
+        this.ajaxLenght++
       
         const axiosPar = {
           params: {
@@ -286,7 +289,9 @@ new Vue({
           }
         }
         axios.get('https://api.themoviedb.org/3/search/' + searchType, axiosPar).then((resp) => {
+            this.ajaxLenght--
             if( searchType === "movie"){
+
               if(resp.data.results){
                 this.movieList = resp.data.results  
               }
@@ -299,8 +304,11 @@ new Vue({
               })
               }
             }
+            if(this.ajaxLenght === 0){
+              this.render()
+            }
         })
-          setTimeout(this.render, 2000)
+          // setTimeout(this.render, 2000)
       },
       
       render(){
@@ -340,6 +348,7 @@ new Vue({
 
       doSearch(){
         this.finalList = ""
+        this.ajaxLenght = 0
         this.makeAxiosSearch("movie")
         this.makeAxiosSearch("tv")
         this.textToSearch = "" 

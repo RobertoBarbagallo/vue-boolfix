@@ -22,23 +22,35 @@
             <input @keyup.enter="doSearch" type="text" v-model="textToSearch">
         </header>
        
-        <ul>
-            <li v-for="result in finalList">
-                <img v-if="result.poster_path" :src="posterUri + posterSize + result.poster_path" alt="">
-                <p>Titolo: {{result.title}}</p>
+        <main>
+            <div v-for="result in finalList">
+                <div v-if="result.poster_path"  class="postercontainer">
+                    <img :src="posterUri + posterSize + result.poster_path" alt="poster">
+                    <div class="info">
+                        <p> <strong>Titolo:</strong>  {{result.title}}</p>
+                        <p> <strong>Titolo originale:</strong>  {{result.original_title}}</p>
+                        <p> <strong>Voto</strong> </p>
+                        <p>
+                            <i v-for="fullstar in result.fullStars" class="fa fa-star" aria-hidden="true"></i><i v-for="emptystar in result.emptyStars" class="fa fa-star-o" aria-hidden="true"></i>
+                        </p>
+                        <p class="overview" v-if="result.overview"> <strong>Recensione:</strong>  {{result.overview}}</p>
+                    </div>
+                </div>
+             
+                <!-- <p>Titolo: {{result.title}}</p>
                 <p>Titolo originale: {{result.original_title}}</p>
                 <p>Lingua: {{result.original_language}}</p>
                 <p>
                     <i v-for="fullstar in result.fullStars" class="fa fa-star" aria-hidden="true"></i><i v-for="emptystar in result.emptyStars" class="fa fa-star-o" aria-hidden="true"></i>
 
-                </p>
-                <p>Nazioni compatibili con la lingua originale</p>
+                </p> -->
+                <!-- <p>Nazioni compatibili con la lingua originale</p>
                 <p v-for="flag in result.flags">
                     <span class="flag-icon" :class="flag"></span>
-                </p>
+                </p> -->
                 
-            </li>
-        </ul>
+            </div>
+        </main>
     </div>
     <script src="app.js"></script>
 </body>
