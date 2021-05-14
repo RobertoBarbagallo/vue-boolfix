@@ -13,8 +13,15 @@
     </head>
 <body>
     <div id="app">
-        <input type="text" v-model="textToSearch">
-        <button @click="doSearch" >Cerca</button>
+        <header>
+            <div class="logo-container">
+                <img src="logo.png" alt="logo di boolflix">
+            </div>
+            <div class="whitespace"></div>
+
+            <input @keyup.enter="doSearch" type="text" v-model="textToSearch">
+        </header>
+       
         <ul>
             <li v-for="result in finalList">
                 <img v-if="result.poster_path" :src="posterUri + posterSize + result.poster_path" alt="">

@@ -340,10 +340,9 @@ new Vue({
 
       doSearch(){
         this.finalList = ""
-        
         this.makeAxiosSearch("movie")
         this.makeAxiosSearch("tv")
-
+        this.textToSearch = "" 
       }
 
     },
