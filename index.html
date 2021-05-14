@@ -16,6 +16,7 @@
         <button @click="doSearch" >Cerca</button>
         <ul>
             <li v-for="result in finalList">
+                <img v-if="result.poster_path" :src="posterUri + posterSize + result.poster_path" alt="">
                 <p>Titolo: {{result.title}}</p>
                 <p>Titolo originale: {{result.original_title}}</p>
                 <p>Lingua: {{result.original_language}}</p>

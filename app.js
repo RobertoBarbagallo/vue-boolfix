@@ -8,6 +8,8 @@ new Vue({
       movieList: [],
       seriesList: [],
       finalList: "",
+      posterUri: "https://image.tmdb.org/t/p",
+      posterSize: "/w342",
       languages_by_locale: {
         af_NA: "Afrikaans (Namibia)",
         af_ZA: "Afrikaans (South Africa)",
@@ -298,9 +300,7 @@ new Vue({
               }
             }
         })
-
-      
-          setTimeout(this.render, 3000)
+          setTimeout(this.render, 2000)
       },
       
       render(){
