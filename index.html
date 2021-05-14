@@ -15,14 +15,19 @@
         <input type="text" v-model="textToSearch">
         <button @click="doSearch" >Cerca</button>
         <ul>
-            <li v-for="results in concat()">
-                <p>Titolo: {{results.title}}</p>
-                <p>Titolo originale: {{results.original_title}}</p>
-                <p>Lingua: {{results.original_language}}</p>
-                <p>Voto: {{results.vote_average}}</p>
+            <li v-for="result in finalList">
+                <p>Titolo: {{result.title}}</p>
+                <p>Titolo originale: {{result.original_title}}</p>
+                <p>Lingua: {{result.original_language}}</p>
+                <p>Voto: {{result.vote_average}}</p>
+                <p>Nazioni compatibili con la lingua originale</p>
+                <p v-for="flag in result.flags">
+                    <span class="flag-icon" :class="flag"></span>
+                </p>
             </li>
         </ul>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
