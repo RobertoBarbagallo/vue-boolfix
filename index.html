@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="netflix-fonts.css">
-        <link rel="stylesheet" href="style.css">
-        <title>BOOLFLIX</title>
-    </head>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="netflix-fonts.css">
+    <link rel="stylesheet" href="style.css">
+    <title>BOOLFLIX</title>
+</head>
+
 <body>
     <div id="app">
         <header>
@@ -20,37 +22,50 @@
             </div>
             <div class="whitespace"></div>
 
+            <div v-if="finalList" :class="{addedclass : addClass}" class="button" @click="showGenres()">Filtra ricerca per generi
+                <div @click="defaultFilter()" class="genre" v-if="finalListGenres && genreListShow">Tutti</div>
+                <div @click="filterFinaList(genre)" v-if="finalListGenres && genreListShow" v-for="genre in finalListGenres" class="genre">{{genre}}</div>
+            </div>
+            
+
             <input @keyup.enter="doSearch" type="text" v-model="textToSearch">
         </header>
-       
+
         <main>
-            <div v-for="result in finalList">
-                <div v-if="result.poster_path"  class="postercontainer">
+            <div v-for="result in finalListFiltered">
+                <div v-if="result.poster_path" class="postercontainer">
                     <img :src="posterUri + posterSize + result.poster_path" alt="poster">
                     <div class="info">
                         <p> <strong>Titolo: </strong> &nbsp; {{result.title}}</p>
                         <p> <strong>Titolo originale: </strong> &nbsp; {{result.original_title}}</p>
-                        <p class="for-pop-up"> <strong>Voto</strong> <i @click="voteShow(result)" class="fa fa-chevron-down" aria-hidden="true"></i> </p>
+                        <p class="for-pop-up"> <strong>Voto</strong> <i @click="voteShow(result)"
+                                class="fa fa-chevron-down" aria-hidden="true"></i> </p>
                         <p class="pop-up" v-if="result.voteClick == true ">
-                            <i v-for="fullstar in result.fullStars" class="fa fa-star" aria-hidden="true"></i><i v-for="emptystar in result.emptyStars" class="fa fa-star-o" aria-hidden="true"></i>
+                            <i v-for="fullstar in result.fullStars" class="fa fa-star" aria-hidden="true"></i><i
+                                v-for="emptystar in result.emptyStars" class="fa fa-star-o" aria-hidden="true"></i>
                         </p>
-                        <p class="for-pop-up"> <strong>Attori</strong> <i @click="actorsShow(result)" class="fa fa-chevron-down" aria-hidden="true"></i> </p>
-                        <p class="pop-up" v-if="result.actorClick" v-for="actor in result.actors"> &middot; {{actor}}</p>
+                        <p class="for-pop-up"> <strong>Attori</strong> <i @click="actorsShow(result)"
+                                class="fa fa-chevron-down" aria-hidden="true"></i> </p>
+                        <p class="pop-up" v-if="result.actorClick" v-for="actor in result.actors"> &middot; {{actor}}
+                        </p>
 
-                        
+
                         <!-- <p>Nazioni compatibili con la lingua originale</p>
                         <p v-for="flag in result.flags">
                             <span class="flag-icon" :class="flag"></span>
                         </p> -->
 
-                        
-                        <p v-if="result.overview !=='' " class="for-pop-up"> <strong>Recensione</strong> <i @click="overviewShow(result)" class="fa fa-chevron-down" aria-hidden="true"></i> </p>
-                        <p v-if="result.overviewClick == true" class="overview pop-up" v-if="result.overview">{{result.overview}}</p>
+
+                        <p v-if="result.overview !=='' " class="for-pop-up"> <strong>Recensione</strong> <i
+                                @click="overviewShow(result)" class="fa fa-chevron-down" aria-hidden="true"></i> </p>
+                        <p v-if="result.overviewClick == true" class="overview pop-up" v-if="result.overview">
+                            {{result.overview}}</p>
                     </div>
-                </div>    
+                </div>
             </div>
         </main>
     </div>
     <script src="app.js"></script>
 </body>
+
 </html>

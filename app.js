@@ -8,6 +8,10 @@ new Vue({
     moviesList: [],
     seriesList: [],
     finalList: "",
+    finalListFiltered: "",
+    finalListGenres: [],
+    genreListShow: false,
+    addClass: false,
     posterUri: "https://image.tmdb.org/t/p",
     posterSize: "/w342",
     ajaxLenght: 0,
@@ -327,12 +331,13 @@ new Vue({
 
     render() {
       let tempArray = [];
+      this.finalListGenres = []
       const apikey = {
         params: {
           api_key: this.tmdbApiKey,
           language: "it-IT"
         }
-      };
+      };      
       finalList = this.moviesList.concat(this.seriesList);
       finalList.forEach(film => {
         this.$set(film, "flags", []);
@@ -350,9 +355,13 @@ new Vue({
           });
 
         });
+
       });
 
       this.finalList = finalList;
+      if(!this.finalListFiltered){
+        this.finalListFiltered = this.finalList
+      }
       this.myFlagAssign();
       this.starAssign();
     },
@@ -401,6 +410,28 @@ new Vue({
         result.actorClick = !result.actorClick;
       });
     },
+
+    showGenres(){
+      this.genreListShow = !this.genreListShow
+      this.finalList.forEach(film =>{
+        film.genres.forEach(genre =>{
+          if(!this.finalListGenres.includes(genre)){
+            this.finalListGenres.push(genre)
+          }
+        })
+      }) 
+      this.addClass = !this.addClass
+    },
+
+    filterFinaList(genre){
+      this.finalListFiltered = this.finalList.filter(film => film.genres.includes(genre))
+    },
+
+    defaultFilter(){
+      this.finalListFiltered = this.finalList
+    },
+
+  
 
     doSearch() {
       this.finalList = "";
