@@ -9,8 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="netflix-fonts.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/netflix-fonts.css">
+    <link rel="stylesheet" href="styles/style.css">
     <title>BOOLFLIX</title>
 </head>
 
@@ -27,13 +27,15 @@
                 <div @click="filterFinaList(genre)" v-if="finalListGenres && genreListShow" v-for="genre in finalListGenres" class="genre">{{genre}}</div>
             </div>
             
-
             <input @keyup.enter="doSearch" type="text" v-model="textToSearch">
         </header>
+        <div class="genrebar">
+          {{selectedGenre}}  
+        </div>
 
         <main>
-            <div v-for="result in finalListFiltered">
-                <div v-if="result.poster_path" class="postercontainer">
+            <div  v-if="result.poster_path" v-for="result in finalListFiltered">
+                <div class="postercontainer">
                     <img :src="posterUri + posterSize + result.poster_path" alt="poster">
                     <div class="info">
                         <p> <strong>Titolo: </strong> &nbsp; {{result.title}}</p>

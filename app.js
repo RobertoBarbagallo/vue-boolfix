@@ -9,6 +9,7 @@ new Vue({
     seriesList: [],
     finalList: "",
     finalListFiltered: "",
+    selectedGenre: "",
     finalListGenres: [],
     genreListShow: false,
     addClass: false,
@@ -287,7 +288,7 @@ new Vue({
     },
 
     actShow(film) {
-      film.actorClick = !film.actorClick
+      film.actorClick = !film.actorClick;
     },
 
     makeAxiosSearch(searchType) {
@@ -335,13 +336,13 @@ new Vue({
 
     render() {
       let tempArray = [];
-      this.finalListGenres = []
+      this.finalListGenres = [];
       const apikey = {
         params: {
           api_key: this.tmdbApiKey,
           language: "it-IT"
         }
-      };      
+      };
       finalList = this.moviesList.concat(this.seriesList);
       finalList.forEach(film => {
         this.$set(film, "flags", []);
@@ -357,7 +358,7 @@ new Vue({
           tempArray = resp.data.genres;
           tempArray.forEach(genre => {
             film.genres.push(genre.name);
-            this.actorsShow(film)
+            this.actorsShow(film);
           });
 
         });
@@ -365,10 +366,10 @@ new Vue({
       });
 
       this.finalList = finalList;
-      if(!this.finalListFiltered){
-        this.finalListFiltered = this.finalList
+      if (!this.finalListFiltered) {
+        this.finalListFiltered = this.finalList;
       }
-     
+
       this.myFlagAssign();
       this.starAssign();
     },
@@ -405,8 +406,8 @@ new Vue({
         }
       };
       axios.get('https://api.themoviedb.org/3/' + film.searchType + "/" + filmID + "/credits", apikey).then((resp) => {
-        if (resp.data.cast && resp.data.cast.length !==0) {
-          film.actorsExist = true
+        if (resp.data.cast && resp.data.cast.length !== 0) {
+          film.actorsExist = true;
           tempArray = resp.data.cast;
           tempArray.forEach(actor => {
             film.actors.push(actor.name);
@@ -414,30 +415,33 @@ new Vue({
         }
         film.actors = film.actors.slice(0, 5);
       });
- 
+
     },
 
-    showGenres(){
-      this.genreListShow = !this.genreListShow
-      this.finalList.forEach(film =>{
-        film.genres.forEach(genre =>{
-          if(!this.finalListGenres.includes(genre)){
-            this.finalListGenres.push(genre)
+    showGenres() {
+      this.genreListShow = !this.genreListShow;
+      this.finalList.forEach(film => {
+        film.genres.forEach(genre => {
+          if (!this.finalListGenres.includes(genre)) {
+            this.finalListGenres.push(genre);
           }
-        })
-      }) 
-      this.addClass = !this.addClass
+        });
+      });
+      this.addClass = !this.addClass;
     },
 
-    filterFinaList(genre){
-      this.finalListFiltered = this.finalList.filter(film => film.genres.includes(genre))
+    filterFinaList(genre) {
+      this.selectedGenre = ""
+      this.selectedGenre = genre
+      this.finalListFiltered = this.finalList.filter(film => film.genres.includes(genre));
     },
 
-    defaultFilter(){
-      this.finalListFiltered = this.finalList
+    defaultFilter() {
+      this.selectedGenre = ""
+      this.finalListFiltered = this.finalList;
     },
 
-  
+
 
     doSearch() {
       this.finalListFiltered = "";
