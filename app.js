@@ -286,6 +286,10 @@ new Vue({
       film.overviewClick = !film.overviewClick;
     },
 
+    actShow(film) {
+      film.actorClick = !film.actorClick
+    },
+
     makeAxiosSearch(searchType) {
 
       this.ajaxLength++;
@@ -346,12 +350,14 @@ new Vue({
         this.$set(film, "voteClick", false);
         this.$set(film, "overviewClick", false);
         this.$set(film, "actorClick", false);
+        this.$set(film, "actorsExist", false);
         this.$set(film, "actors", []);
         this.$set(film, "genres", []);
         axios.get('https://api.themoviedb.org/3/' + film.searchType + "/" + film.id, apikey).then((resp) => {
           tempArray = resp.data.genres;
           tempArray.forEach(genre => {
             film.genres.push(genre.name);
+            this.actorsShow(film)
           });
 
         });
@@ -362,6 +368,7 @@ new Vue({
       if(!this.finalListFiltered){
         this.finalListFiltered = this.finalList
       }
+     
       this.myFlagAssign();
       this.starAssign();
     },
@@ -388,27 +395,26 @@ new Vue({
       });
     },
 
-    actorsShow(result) {
+    actorsShow(film) {
       let tempArray = [];
-      const filmID = result.id;
+      const filmID = film.id;
       const apikey = {
         params: {
           api_key: this.tmdbApiKey,
           language: "it-IT"
         }
       };
-      axios.get('https://api.themoviedb.org/3/' + result.searchType + "/" + filmID + "/credits", apikey).then((resp) => {
-        if (resp.data.cast) {
+      axios.get('https://api.themoviedb.org/3/' + film.searchType + "/" + filmID + "/credits", apikey).then((resp) => {
+        if (resp.data.cast && resp.data.cast.length !==0) {
+          film.actorsExist = true
           tempArray = resp.data.cast;
           tempArray.forEach(actor => {
-            console.log(actor.name);
-            result.actors.push(actor.name);
+            film.actors.push(actor.name);
           });
         }
-        result.actors = result.actors.slice(0, 5);
-        console.log(result.actors);
-        result.actorClick = !result.actorClick;
+        film.actors = film.actors.slice(0, 5);
       });
+ 
     },
 
     showGenres(){
@@ -434,7 +440,7 @@ new Vue({
   
 
     doSearch() {
-      this.finalList = "";
+      this.finalListFiltered = "";
       this.ajaxLength = 0;
       this.makeAxiosSearch("movie");
       this.makeAxiosSearch("tv");
