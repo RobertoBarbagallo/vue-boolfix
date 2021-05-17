@@ -14,6 +14,8 @@ body {
 }
 
 header {
+    width: 80%;
+    margin: auto;
     padding: 25px 0;
     background-color: black;
     display: flex;
@@ -24,7 +26,6 @@ header {
 .logo-container {
     height: 60px;
     width: 200px;
-    margin-left: calc(10% + 15px);
 }
 
 .logo-container img {
@@ -66,7 +67,7 @@ article{
     font-family: 'Netflix Sans';
 }
 
-.button-dropdown, .button-dropdown-serachtype{
+.button-dropdown{
     margin: 20px;
     padding: 5px;
     border-radius: 10px;
@@ -80,24 +81,6 @@ article{
     overflow: hidden;
     transition: .3s;
 } 
-
-
-
-/* .button-dropdown {
-    right: 180px;
-}
-
-.button-dropdown-serachtype{
-    right: 360px;
-}
-
-.typesDropdown{
-   transform: translateY(-15px);
-}
-
-.genresDropdown{
-   transform: translateY(-15px);  
-} */
 
 .genre{
     padding: 5px;
@@ -338,13 +321,25 @@ main {
 
 /* Media Queries */
 
-@media screen and (max-width: 1080px){
-/* 
-    .button-dropdown, .button-dropdown-serachtype{
-        font-size: 12px;
-        padding: 2px;
-        margin: 5px;
-        top: 100%
-    } */
+@media screen and (max-width: 768px){
+    main{
+        width: 100%;
+    }
+    .instruments i{
+       margin: 0 10px; 
+    }
+    .search-menu i{
+        display: none;
+    }
+    .button-dropdown{
+        margin: 10px 0px 10px 10px;
+        font-size: 10px;
+    }
+    .logo-container{
+        width: 60px
+    }
+    .search-menu{
+        width: 180px;
+    }
 }
   
