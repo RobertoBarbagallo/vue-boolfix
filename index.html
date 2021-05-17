@@ -54,7 +54,7 @@
         <main v-if="!loading">
             <aside>
                 <div class="button-container">
-                    <div v-if="finalList" class="button-dropdown" @click="showTypes()"
+                    <div v-if="finalList" class="button dropdown" @click="showTypes()"
                         :class="{typesDropdown : typesOpen}">
                         Filtra la ricerca per tipologia
                         <div @click="defaultTypeFilter()" class="genre" v-if="finalTypesList && typeListShow">TUTTI
@@ -63,7 +63,7 @@
                             v-for="type in finalTypesList" class="genre">{{type.toUpperCase()}}</div>
 
                     </div>
-                    <div v-if="finalList" class="button-dropdown" @click="showGenres()"
+                    <div v-if="finalList" class="button dropdown" @click="showGenres()"
                         :class="{genresDropdown : genresOpen}">
                         Filtra ricerca per generi
                         <div @click="defaultFilter()" class="genre" v-if="finalListGenres && genreListShow">Tutti</div>
