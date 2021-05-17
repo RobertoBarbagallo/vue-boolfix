@@ -38,19 +38,24 @@
             </div>
             <input @keyup.enter="doSearch" type="text" placeholder="Cerca" v-model="textToSearch">
         </header>
-        <div v-if="selectedGenre" class="bar">
-            Genere: {{selectedGenre}}
-        </div>
-        <div v-if="selectedType" class="bar">
-            Tipologia: {{selectedType.toUpperCase()}}
+        <div class="bar">
+            <div class="sticker" v-if="selectedGenre">
+               <p class="label">Genere</p>  <p class="selection"> {{ selectedGenre}} </p> 
+            </div>
+            <div class="sticker" v-if="selectedType">
+                <p class="label">Tipologia</p>  <p class="selection"> {{ selectedType.toUpperCase()}} </p> 
+            </div>
         </div>
 
-        <main>
+
+        <main v-if="!loading">
             <div v-if="result" v-for="result in finalListFiltered">
                 <div class="postercontainer">
-                    <img v-if="result.poster_path" :src="posterUri + posterSize + result.poster_path"
+                    <div class="img-container">
+                        <img v-if="result.poster_path" :src="posterUri + posterSize + result.poster_path"
                         alt="result.title">
-                    <img v-else src="imgs/video-poster.jpg" alt="result.title" class="default-poster">
+                        <img v-else src="imgs/video-poster.jpg" alt="result.title" class="default-poster">
+                    </div>
                     <div class="info">
                         <p> <strong>Titolo: </strong> &nbsp; {{result.title}}</p>
                         <p> <strong>Titolo originale: </strong> &nbsp; {{result.original_title}}</p>
@@ -65,14 +70,6 @@
                         </p>
                         <p class="pop-up" v-if="result.actorClick" v-for="actor in result.actors"> &middot; {{actor}}
                         </p>
-
-
-                        <!-- <p>Nazioni compatibili con la lingua originale</p>
-                        <p v-for="flag in result.flags">
-                            <span class="flag-icon" :class="flag"></span>
-                        </p> -->
-
-
                         <p v-if="result.overview !=='' " class="for-pop-up"> <strong>Recensione</strong> <i
                                 @click="overviewShow(result)" class="fa fa-chevron-down" aria-hidden="true"></i> </p>
                         <p v-if="result.overviewClick == true" class="overview pop-up" v-if="result.overview">
@@ -81,6 +78,9 @@
                 </div>
             </div>
         </main>
+        <div v-else class="loading-spinner-container" >
+            <div class="loader">Loading...</div>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>
