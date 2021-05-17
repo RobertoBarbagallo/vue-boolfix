@@ -17,6 +17,7 @@ new Vue({
     typeListShow: false,
     genresOpen: false,
     typesOpen: false,
+    loading: "",
     posterUri: "https://image.tmdb.org/t/p",
     posterSize: "/w342",
     ajaxLenght: 0,
@@ -296,7 +297,6 @@ new Vue({
     },
 
     makeAxiosSearch(searchType, page) {
-
       this.ajaxLength++;
 
       const axiosPar = {
@@ -389,9 +389,9 @@ new Vue({
       if (!this.finalListFiltered) {
         this.finalListFiltered = this.finalList;
       }
-
       this.myFlagAssign();
       this.starAssign();
+      this.loading = false
     },
 
     myFlagAssign() {
@@ -488,13 +488,16 @@ new Vue({
       this.ajaxLength = 0;
       this.makeAxiosSearch("movie", 1);
       this.makeAxiosSearch("tv", 1);
+      this.loading = true
       this.moviesList = []
       this.seriesList = []
+      this.selectedGenre = ""
+      this.selectedType = ""
     }
 
   },
 
   mounted() {
-
+    this.loading = false
   },
 });
