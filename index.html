@@ -20,65 +20,114 @@
             <div class="logo-container">
                 <img src="imgs/logo.png" alt="Logo di Boolflix">
             </div>
-            <div class="whitespace"></div>
-
-            <div v-if="finalList" class="button-dropdown-serachtype" @click="showTypes()"
-                :class="{typesDropdown : typesOpen}">
-                Filtra la ricerca per tipologia
-                <div @click="defaultTypeFilter()" class="genre" v-if="finalTypesList && typeListShow">TUTTI</div>
-                <div @click="filterFinaListForType(type)" v-if="finalTypesList && typeListShow"
-                    v-for="type in finalTypesList" class="genre">{{type.toUpperCase()}}</div>
-
+            <div class="whitespace">
             </div>
-            <div v-if="finalList" class="button-dropdown" @click="showGenres()" :class="{genresDropdown : genresOpen}">
-                Filtra ricerca per generi
-                <div @click="defaultFilter()" class="genre" v-if="finalListGenres && genreListShow">Tutti</div>
-                <div @click="filterFinaList(genre)" v-if="finalListGenres && genreListShow"
-                    v-for="genre in finalListGenres" class="genre">{{genre}}</div>
+            <div v-if="showSearch" class="search-menu">
+                <div class="instruments">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <i class="fa fa-cog" aria-hidden="true"></i>
+                </div>
+                <!-- <div class="button-container">
+                    <div v-if="finalList" class="button-dropdown-serachtype" @click="showTypes()"
+                        :class="{typesDropdown : typesOpen}">
+                        Filtra la ricerca per tipologia
+                        <div @click="defaultTypeFilter()" class="genre" v-if="finalTypesList && typeListShow">TUTTI
+                        </div>
+                        <div @click="filterFinaListForType(type)" v-if="finalTypesList && typeListShow"
+                            v-for="type in finalTypesList" class="genre">{{type.toUpperCase()}}</div>
+
+                    </div>
+                    <div v-if="finalList" class="button-dropdown" @click="showGenres()"
+                        :class="{genresDropdown : genresOpen}">
+                        Filtra ricerca per generi
+                        <div @click="defaultFilter()" class="genre" v-if="finalListGenres && genreListShow">Tutti</div>
+                        <div @click="filterFinaList(genre)" v-if="finalListGenres && genreListShow"
+                            v-for="genre in finalListGenres" class="genre">{{genre}}</div>
+                    </div>
+
+                </div> -->
+
+                <input @keyup.enter="doSearch" type="text" placeholder="Cerca" v-model="textToSearch">
             </div>
-            <input @keyup.enter="doSearch" type="text" placeholder="Cerca" v-model="textToSearch">
+            <div class="instruments" v-else>
+                <i class="fa fa-bars" aria-hidden="true"></i>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <i @click="openSearchBar()" class="fa fa-search" aria-hidden="true"></i>
+                <i class="fa fa-cog" aria-hidden="true"></i>
+            </div>
+
         </header>
         <div class="bar">
             <div class="sticker" v-if="selectedGenre">
-               <p class="label">Genere</p>  <p class="selection"> {{ selectedGenre}} </p> 
+                <p class="label">Genere</p>
+                <p class="selection"> {{ selectedGenre}} </p>
             </div>
             <div class="sticker" v-if="selectedType">
-                <p class="label">Tipologia</p>  <p class="selection"> {{ selectedType.toUpperCase()}} </p> 
+                <p class="label">Tipologia</p>
+                <p class="selection"> {{ selectedType.toUpperCase()}} </p>
             </div>
         </div>
 
 
+
         <main v-if="!loading">
-            <div v-if="result" v-for="result in finalListFiltered">
-                <div class="postercontainer">
-                    <div class="img-container">
-                        <img v-if="result.poster_path" :src="posterUri + posterSize + result.poster_path"
-                        alt="result.title">
-                        <img v-else src="imgs/video-poster.jpg" alt="result.title" class="default-poster">
+            <aside>
+                <div class="button-container">
+                    <div v-if="finalList" class="button-dropdown-serachtype" @click="showTypes()"
+                        :class="{typesDropdown : typesOpen}">
+                        Filtra la ricerca per tipologia
+                        <div @click="defaultTypeFilter()" class="genre" v-if="finalTypesList && typeListShow">TUTTI
+                        </div>
+                        <div @click="filterFinaListForType(type)" v-if="finalTypesList && typeListShow"
+                            v-for="type in finalTypesList" class="genre">{{type.toUpperCase()}}</div>
+
                     </div>
-                    <div class="info">
-                        <p> <strong>Titolo: </strong> &nbsp; {{result.title}}</p>
-                        <p> <strong>Titolo originale: </strong> &nbsp; {{result.original_title}}</p>
-                        <p v-if="result.vote_count !== 0" class="for-pop-up"> <strong>Voto</strong> <i
-                                @click="voteShow(result)" class="fa fa-chevron-down" aria-hidden="true"></i> </p>
-                        <p class="pop-up" v-if="result.voteClick == true ">
-                            <i v-for="fullstar in result.fullStars" class="fa fa-star" aria-hidden="true"></i><i
-                                v-for="emptystar in result.emptyStars" class="fa fa-star-o" aria-hidden="true"></i>
-                        </p>
-                        <p v-if="result.actorsExist" class="for-pop-up"> <strong>Attori</strong>
-                            <i @click="actShow(result)" class="fa fa-chevron-down" aria-hidden="true"></i>
-                        </p>
-                        <p class="pop-up" v-if="result.actorClick" v-for="actor in result.actors"> &middot; {{actor}}
-                        </p>
-                        <p v-if="result.overview !=='' " class="for-pop-up"> <strong>Recensione</strong> <i
-                                @click="overviewShow(result)" class="fa fa-chevron-down" aria-hidden="true"></i> </p>
-                        <p v-if="result.overviewClick == true" class="overview pop-up" v-if="result.overview">
-                            {{result.overview}}</p>
+                    <div v-if="finalList" class="button-dropdown" @click="showGenres()"
+                        :class="{genresDropdown : genresOpen}">
+                        Filtra ricerca per generi
+                        <div @click="defaultFilter()" class="genre" v-if="finalListGenres && genreListShow">Tutti</div>
+                        <div @click="filterFinaList(genre)" v-if="finalListGenres && genreListShow"
+                            v-for="genre in finalListGenres" class="genre">{{genre}}</div>
+                    </div>
+
+                </div>
+
+            </aside>
+            <article>
+                <div v-if="result" v-for="result in finalListFiltered">
+                    <div class="postercontainer">
+                        <div class="img-container">
+                            <img v-if="result.poster_path" :src="posterUri + posterSize + result.poster_path"
+                                alt="result.title">
+                            <img v-else src="imgs/video-poster.jpg" alt="result.title" class="default-poster">
+                        </div>
+                        <div class="info">
+                            <p> <strong>Titolo: </strong> &nbsp; {{result.title}}</p>
+                            <p> <strong>Titolo originale: </strong> &nbsp; {{result.original_title}}</p>
+                            <p v-if="result.vote_count !== 0" class="for-pop-up"> <strong>Voto</strong> <i
+                                    @click="voteShow(result)" class="fa fa-chevron-down" aria-hidden="true"></i> </p>
+                            <p class="pop-up" v-if="result.voteClick == true ">
+                                <i v-for="fullstar in result.fullStars" class="fa fa-star" aria-hidden="true"></i><i
+                                    v-for="emptystar in result.emptyStars" class="fa fa-star-o" aria-hidden="true"></i>
+                            </p>
+                            <p v-if="result.actorsExist" class="for-pop-up"> <strong>Attori</strong>
+                                <i @click="actShow(result)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                            </p>
+                            <p class="pop-up" v-if="result.actorClick" v-for="actor in result.actors"> &middot;
+                                {{actor}}
+                            </p>
+                            <p v-if="result.overview !=='' " class="for-pop-up"> <strong>Recensione</strong> <i
+                                    @click="overviewShow(result)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                            </p>
+                            <p v-if="result.overviewClick == true" class="overview pop-up" v-if="result.overview">
+                                {{result.overview}}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </article>
         </main>
-        <div v-else class="loading-spinner-container" >
+        <div v-else class="loading-spinner-container">
             <div class="loader">Loading...</div>
         </div>
     </div>
