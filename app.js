@@ -7,6 +7,7 @@ new Vue({
     tmdbApiKey: "573397bc7c4216308a66c317bd7d4644",
     moviesList: [],
     seriesList: [],
+    showSearch: false,
     finalList: "",
     finalListFiltered: "",
     selectedGenre: "",
@@ -392,6 +393,7 @@ new Vue({
       this.myFlagAssign();
       this.starAssign();
       this.loading = false
+      this.textToSearch = ""
     },
 
     myFlagAssign() {
@@ -493,6 +495,10 @@ new Vue({
       this.seriesList = []
       this.selectedGenre = ""
       this.selectedType = ""
+    },
+
+    openSearchBar(){
+      this.showSearch = true
     }
 
   },
