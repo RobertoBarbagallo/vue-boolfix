@@ -30,26 +30,40 @@ header {
 .whitespace {
     flex-grow: 1;
 }
-
-.button {
+.button-dropdown, .button-dropdown-serachtype, .load{
+    margin: 0 10px;
     padding: 5px;
     border-radius: 10px;
     background-color: black;
     color: white;
     border: 1px solid white;
     font-size: 16px;
+} 
+
+.button-dropdown, .button-dropdown-serachtype {
     display: flex;
     flex-direction: column;
     position: absolute;
-    z-index: 20;
-    right: 320px;
     top: 50%;
     transform: translateY(-50%);
     overflow: hidden;
     transition: .3s;
 }
-.addedclass{
-   transform: translateY(-14px);
+
+.button-dropdown {
+    right: 320px;
+}
+
+.button-dropdown-serachtype{
+    right: 495px;
+}
+
+.typesDropdown{
+   transform: translateY(-15px);
+}
+
+.genresDropdown{
+   transform: translateY(-15px);  
 }
 
 .genre{
@@ -63,7 +77,7 @@ header {
 
 input {
     height: 30px;
-    margin-right: 20px;
+    padding-left: 10px;
     border-radius: 10px;
     margin-right: calc(10% + 15px);
     ;
@@ -73,7 +87,7 @@ input:focus {
     outline: none;
 }
 
-.genrebar{
+.bar{
     height: 50px;
     font-size: 24px;
     text-align: center;
@@ -123,6 +137,10 @@ main {
     display: block;
 }
 
+.default-poster{
+    object-fit: cover;
+}
+
 .postercontainer:hover img {
     display: none;
 }
@@ -164,4 +182,10 @@ main {
     height: 20px;
     width: 100%;
     background: linear-gradient(rgba(0, 0, 0, 0), #000);
+}
+
+.load{
+    width: 120px;
+    text-align: center;
+    margin: auto;
 }

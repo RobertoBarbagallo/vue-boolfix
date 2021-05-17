@@ -10,9 +10,13 @@ new Vue({
     finalList: "",
     finalListFiltered: "",
     selectedGenre: "",
+    selectedType: "",
     finalListGenres: [],
+    finalTypesList: [],
     genreListShow: false,
-    addClass: false,
+    typeListShow: false,
+    genresOpen: false,
+    typesOpen: false,
     posterUri: "https://image.tmdb.org/t/p",
     posterSize: "/w342",
     ajaxLenght: 0,
@@ -291,7 +295,7 @@ new Vue({
       film.actorClick = !film.actorClick;
     },
 
-    makeAxiosSearch(searchType) {
+    makeAxiosSearch(searchType, page) {
 
       this.ajaxLength++;
 
@@ -299,6 +303,7 @@ new Vue({
         params: {
           api_key: this.tmdbApiKey,
           query: this.textToSearch,
+          page: page,
           language: "it-IT"
         }
       };
@@ -307,35 +312,46 @@ new Vue({
         if (searchType === "movie") {
 
           if (resp.data.results) {
-            this.moviesList = resp.data.results;
-            this.moviesList.forEach(movie => {
-              this.$set(movie, "searchType", searchType);
+            this.moviesList.push(resp.data.results);
+            this.moviesList.forEach(movieArray => {
+              movieArray.forEach(movie => {
+                this.$set(movie, "searchType", searchType);
+              });
             });
-
+            if (resp.data.page < resp.data.total_pages) {
+              this.makeAxiosSearch(searchType, page + 1);
+            }
           }
         } else if (searchType === "tv") {
           if (resp.data.results) {
             this.seriesList.searchType = searchType;
-            this.seriesList = resp.data.results.map((tvShow) => {
+            this.seriesList.push(resp.data.results.map((tvShow) => {
               tvShow.original_title = tvShow.original_name;
               tvShow.title = tvShow.original_name;
               return tvShow;
+            }));
+            this.seriesList.forEach(showArray => {
+              showArray.forEach(show => {
+                this.$set(show, "searchType", searchType);
+              });
+
+
             });
-            this.seriesList.forEach(show => {
-              this.$set(show, "searchType", searchType);
-            });
+            if (resp.data.page < resp.data.total_pages) {
+              this.makeAxiosSearch(searchType, page + 1);
+            }
           }
+
         }
         if (this.ajaxLength == 0) {
           this.render();
         }
       });
-
-      return searchType;
     },
 
     render() {
       let tempArray = [];
+      const finaFullArray = [];
       this.finalListGenres = [];
       const apikey = {
         params: {
@@ -344,28 +360,32 @@ new Vue({
         }
       };
       finalList = this.moviesList.concat(this.seriesList);
-      finalList.forEach(film => {
-        this.$set(film, "flags", []);
-        this.$set(film, "fullStars", 0);
-        this.$set(film, "emptyStars", 0);
-        this.$set(film, "voteClick", false);
-        this.$set(film, "overviewClick", false);
-        this.$set(film, "actorClick", false);
-        this.$set(film, "actorsExist", false);
-        this.$set(film, "actors", []);
-        this.$set(film, "genres", []);
-        axios.get('https://api.themoviedb.org/3/' + film.searchType + "/" + film.id, apikey).then((resp) => {
-          tempArray = resp.data.genres;
-          tempArray.forEach(genre => {
-            film.genres.push(genre.name);
-            this.actorsShow(film);
+      finalList.forEach(arrayinArray => {
+        arrayinArray.forEach(film => {
+          this.$set(film, "flags", []);
+          this.$set(film, "fullStars", 0);
+          this.$set(film, "emptyStars", 0);
+          this.$set(film, "voteClick", false);
+          this.$set(film, "overviewClick", false);
+          this.$set(film, "actorClick", false);
+          this.$set(film, "actorsExist", false);
+          this.$set(film, "actors", []);
+          this.$set(film, "genres", []);
+          finaFullArray.push(film);
+          axios.get('https://api.themoviedb.org/3/' + film.searchType + "/" + film.id, apikey).then((resp) => {
+            tempArray = resp.data.genres;
+            tempArray.forEach(genre => {
+              film.genres.push(genre.name);
+              this.actorsShow(film);
+            });
+
           });
 
         });
 
-      });
+        this.finalList = finaFullArray;
 
-      this.finalList = finalList;
+      });
       if (!this.finalListFiltered) {
         this.finalListFiltered = this.finalList;
       }
@@ -427,28 +447,47 @@ new Vue({
           }
         });
       });
-      this.addClass = !this.addClass;
+      this.genresOpen = !this.genresOpen;
+    },
+
+    showTypes() {
+      this.typeListShow = !this.typeListShow;
+      this.finalList.forEach(film => {
+        if (!this.finalTypesList.includes(film.searchType)) {
+          this.finalTypesList.push(film.searchType);
+        }
+      });
+      this.typesOpen = !this.typesOpen;
     },
 
     filterFinaList(genre) {
-      this.selectedGenre = ""
-      this.selectedGenre = genre
+      this.selectedGenre = "";
+      this.selectedGenre = genre;
       this.finalListFiltered = this.finalList.filter(film => film.genres.includes(genre));
     },
 
+    filterFinaListForType(type) {
+      this.selectedType = "";
+      this.selectedType = type;
+      this.finalListFiltered = this.finalList.filter(film => film.searchType == type);
+    },
+
     defaultFilter() {
-      this.selectedGenre = ""
+      this.selectedGenre = "";
       this.finalListFiltered = this.finalList;
     },
 
+    defaultTypeFilter() {
+      this.selectedType = "";
+      this.finalListFiltered = this.finalList;
+    },
 
 
     doSearch() {
       this.finalListFiltered = "";
       this.ajaxLength = 0;
-      this.makeAxiosSearch("movie");
-      this.makeAxiosSearch("tv");
-      this.textToSearch = "";
+      this.makeAxiosSearch("movie", 1);
+      this.makeAxiosSearch("tv", 1);
     }
 
   },
