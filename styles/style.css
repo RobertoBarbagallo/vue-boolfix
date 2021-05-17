@@ -14,7 +14,7 @@ body {
 }
 
 header {
-    width: 80%;
+    width: 90%;
     margin: auto;
     padding: 25px 0;
     background-color: black;
@@ -67,7 +67,8 @@ article{
     font-family: 'Netflix Sans';
 }
 
-.button-dropdown{
+.button{
+    width: 60%;
     margin: 20px;
     padding: 5px;
     border-radius: 10px;
@@ -75,12 +76,13 @@ article{
     color: white;
     border: 1px solid white;
     font-size: 16px;
+} 
+
+.dropdown{
     display: flex;
     flex-direction: column;
-    z-index: 20;
     overflow: hidden;
-    transition: .3s;
-} 
+}
 
 .genre{
     padding: 5px;
@@ -137,16 +139,21 @@ input:focus {
 }
 
 main {
-    width: 80%;
+    width: 90%;
     height: 100%;
     margin: auto;
     background-color: black;
     display: flex;
 }
 
+article{
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .postercontainer {
-    width: 200px;
-    height: 300px;
+    width: 160px;
+    height: 250px;
     margin: 15px;
     display: flex;
     flex-direction: column;
@@ -241,9 +248,15 @@ main {
 }
 
 .loading-spinner-container{
-    width: 80%;
-    margin: auto;
     text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.load{
+    width: 120px
 }
 
 
