@@ -488,6 +488,8 @@ new Vue({
       this.ajaxLength = 0;
       this.makeAxiosSearch("movie", 1);
       this.makeAxiosSearch("tv", 1);
+      this.moviesList = []
+      this.seriesList = []
     }
 
   },
