@@ -25,6 +25,7 @@ new Vue({
     seriesPages: 1,
     existMoviesPages: true,
     existSeriesPages: true,
+    toReset: false,
     posterUri: "https://image.tmdb.org/t/p",
     posterSize: "/w342",
     ajaxLenght: 0,
@@ -367,6 +368,9 @@ new Vue({
     },
 
     render() {
+      if(this.toReset){
+        this.reset()
+      }
       let tempArray = [];
       const finaFullArray = [];
       this.finalListGenres = [];
@@ -407,7 +411,6 @@ new Vue({
       this.myFlagAssign();
       this.starAssign();
       this.loading = false;
-      // this.textToSearch = ""
     },
 
     myFlagAssign() {
@@ -499,22 +502,44 @@ new Vue({
     },
 
 
-    doSearch() {
-      this.ajaxLength = 0;
-      if (this.existMoviesPages) {
-        this.makeAxiosSearch("movie", this.moviesPages);
+    doSearch({param}) {
+     
+      if(param = true){
+        this.ajaxLength = 0;
+        if (this.existMoviesPages) {
+          this.makeAxiosSearch("movie", this.moviesPages);
+        }
+        if (this.existSeriesPages) {
+          this.makeAxiosSearch("tv", this.seriesPages);
+        }
+        this.loading = true;
+        this.selectedGenre = "";
+        this.selectedType = "";
+        this.toReset = true
+      }else{
+        this.ajaxLength = 0;
+        if (this.existMoviesPages) {
+          this.makeAxiosSearch("movie", this.moviesPages);
+        }
+        if (this.existSeriesPages) {
+          this.makeAxiosSearch("tv", this.seriesPages);
+        }
+        this.loading = true;
+        this.selectedGenre = "";
+        this.selectedType = "";
       }
-      if (this.existSeriesPages) {
-        this.makeAxiosSearch("tv", this.seriesPages);
-      }
-      this.loading = true;
-      this.selectedGenre = "";
-      this.selectedType = "";
     },
 
     openSearchBar() {
       this.showSearch = true;
     },
+
+    reset(){
+      this.moviesPages = []
+      this.seriesList = []
+      this.finalList = []
+      this.finalListFiltered = []
+    }
   },
 
   mounted() {
