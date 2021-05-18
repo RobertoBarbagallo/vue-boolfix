@@ -4,12 +4,13 @@ new Vue({
 
   data: {
     textToSearch: "",
+    savedText: "",
     tmdbApiKey: "573397bc7c4216308a66c317bd7d4644",
     moviesList: [],
     seriesList: [],
     showSearch: false,
     finalList: "",
-    finalListFiltered: "",
+    finalListFiltered: [],
     selectedGenre: "",
     selectedType: "",
     finalListGenres: [],
@@ -18,7 +19,12 @@ new Vue({
     typeListShow: false,
     genresOpen: false,
     typesOpen: false,
-    loading: "",
+    loading: false,
+    buttonLoadShow: false,
+    moviesPages: 1,
+    seriesPages: 1,
+    existMoviesPages: true,
+    existSeriesPages: true,
     posterUri: "https://image.tmdb.org/t/p",
     posterSize: "/w342",
     ajaxLenght: 0,
@@ -319,8 +325,13 @@ new Vue({
                 this.$set(movie, "searchType", searchType);
               });
             });
-            if (resp.data.page < resp.data.total_pages) {
-              this.makeAxiosSearch(searchType, page + 1);
+            if (resp.data.page <= resp.data.total_pages) {
+              this.buttonLoadShow = true;
+              this.existMoviesPages = true;
+              this.moviesPages++;
+            } else {
+              this.existMoviesPages = false;
+              this.buttonLoadShow = false;
             }
           }
         } else if (searchType === "tv") {
@@ -338,8 +349,13 @@ new Vue({
 
 
             });
-            if (resp.data.page < resp.data.total_pages) {
-              this.makeAxiosSearch(searchType, page + 1);
+            if (resp.data.page <= resp.data.total_pages) {
+              this.buttonLoadShow = true;
+              this.existSeriesPages = true;
+              this.seriesPages++;
+            } else {
+              this.existSeriesPages = false;
+              this.buttonLoadShow = false;
             }
           }
 
@@ -387,13 +403,11 @@ new Vue({
         this.finalList = finaFullArray;
 
       });
-      if (!this.finalListFiltered) {
-        this.finalListFiltered = this.finalList;
-      }
+      Array.prototype.push.apply(this.finalListFiltered, this.finalList);
       this.myFlagAssign();
       this.starAssign();
-      this.loading = false
-      this.textToSearch = ""
+      this.loading = false;
+      // this.textToSearch = ""
     },
 
     myFlagAssign() {
@@ -486,24 +500,25 @@ new Vue({
 
 
     doSearch() {
-      this.finalListFiltered = "";
       this.ajaxLength = 0;
-      this.makeAxiosSearch("movie", 1);
-      this.makeAxiosSearch("tv", 1);
-      this.loading = true
-      this.moviesList = []
-      this.seriesList = []
-      this.selectedGenre = ""
-      this.selectedType = ""
+      if (this.existMoviesPages) {
+        this.makeAxiosSearch("movie", this.moviesPages);
+      }
+      if (this.existSeriesPages) {
+        this.makeAxiosSearch("tv", this.seriesPages);
+      }
+      this.loading = true;
+      this.selectedGenre = "";
+      this.selectedType = "";
     },
 
-    openSearchBar(){
-      this.showSearch = true
-    }
-
+    openSearchBar() {
+      this.showSearch = true;
+    },
   },
 
   mounted() {
-    this.loading = false
   },
+
+
 });
