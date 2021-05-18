@@ -349,7 +349,7 @@ new Vue({
 
 
             });
-            if (resp.data.page <= resp.data.total_pages) {
+            if (resp.data.page < resp.data.total_pages) {
               this.buttonLoadShow = true;
               this.existSeriesPages = true;
               this.seriesPages++;
