@@ -9,6 +9,9 @@ new Vue({
     moviesList: [],
     seriesList: [],
     showSearch: false,
+    tempFinalList: [],
+    finaFullArray: [],
+    resetDone: false,
     finalList: "",
     finalListFiltered: [],
     selectedGenre: "",
@@ -368,11 +371,8 @@ new Vue({
     },
 
     render() {
-      if(this.toReset){
-        this.reset()
-      }
       let tempArray = [];
-      const finaFullArray = [];
+      this.finaFullArray = [];
       this.finalListGenres = [];
       const apikey = {
         params: {
@@ -380,8 +380,9 @@ new Vue({
           language: "it-IT"
         }
       };
-      finalList = this.moviesList.concat(this.seriesList);
-      finalList.forEach(arrayinArray => {
+      
+      this.tempFinalList = this.moviesList.concat(this.seriesList);
+      this.tempFinalList.forEach(arrayinArray => {
         arrayinArray.forEach(film => {
           this.$set(film, "flags", []);
           this.$set(film, "fullStars", 0);
@@ -392,7 +393,7 @@ new Vue({
           this.$set(film, "actorsExist", false);
           this.$set(film, "actors", []);
           this.$set(film, "genres", []);
-          finaFullArray.push(film);
+          this.finaFullArray.push(film);
           axios.get('https://api.themoviedb.org/3/' + film.searchType + "/" + film.id, apikey).then((resp) => {
             tempArray = resp.data.genres;
             tempArray.forEach(genre => {
@@ -404,7 +405,7 @@ new Vue({
 
         });
 
-        this.finalList = finaFullArray;
+        this.finalList = this.finaFullArray;
 
       });
       Array.prototype.push.apply(this.finalListFiltered, this.finalList);
@@ -527,6 +528,10 @@ new Vue({
         this.loading = true;
         this.selectedGenre = "";
         this.selectedType = "";
+        this.toReset = false
+      }
+      if(this.toReset){
+        this.reset()
       }
     },
 
@@ -536,9 +541,14 @@ new Vue({
 
     reset(){
       this.moviesPages = []
+      this.moviesList = []
       this.seriesList = []
+      this.tempFinalList = []
       this.finalList = []
       this.finalListFiltered = []
+      this.resetDone = true
+      this.existMoviesPages = false
+      this.existSeriesPages = false
     }
   },
 
