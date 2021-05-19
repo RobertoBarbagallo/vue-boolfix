@@ -239,7 +239,7 @@ article {
     content: "";
     display: block;
     position: sticky;
-    bottom: 0;
+    bottom: -5px;
     left: 0;
     right: 0;
     height: 30px;

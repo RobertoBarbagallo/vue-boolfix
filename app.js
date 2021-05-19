@@ -353,7 +353,7 @@ new Vue({
 
 
             });
-            if (resp.data.page < resp.data.total_pages) {
+            if (resp.data.page <= resp.data.total_pages) {
               this.buttonLoadShow = true;
               this.existSeriesPages = true;
               this.seriesPages++;
@@ -372,8 +372,6 @@ new Vue({
 
     render() {
       let tempArray = [];
-      this.finaFullArray = [];
-      this.finalListGenres = [];
       const apikey = {
         params: {
           api_key: this.tmdbApiKey,
@@ -503,9 +501,9 @@ new Vue({
     },
 
 
-    doSearch({param}) {
+    doSearch(param) {
      
-      if(param = true){
+      if(param == true){
         this.ajaxLength = 0;
         if (this.existMoviesPages) {
           this.makeAxiosSearch("movie", this.moviesPages);
@@ -529,6 +527,7 @@ new Vue({
         this.selectedGenre = "";
         this.selectedType = "";
         this.toReset = false
+        console.log("carica altro")
       }
       if(this.toReset){
         this.reset()
@@ -541,10 +540,13 @@ new Vue({
 
     reset(){
       this.moviesPages = []
+      this.seriesPages = []
       this.moviesList = []
       this.seriesList = []
       this.tempFinalList = []
       this.finalList = []
+      this.finaFullArray = [];
+      this.finalListGenres = []
       this.finalListFiltered = []
       this.resetDone = true
       this.existMoviesPages = false
