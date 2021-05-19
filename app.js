@@ -24,8 +24,8 @@ new Vue({
     typesOpen: false,
     loading: false,
     buttonLoadShow: false,
-    moviesPages: 1,
-    seriesPages: 1,
+    moviesPages: "",
+    seriesPages: "",
     existMoviesPages: true,
     existSeriesPages: true,
     toReset: false,
@@ -308,8 +308,8 @@ new Vue({
     },
 
     makeAxiosSearch(searchType, page) {
-      this.ajaxLength++;
 
+      this.ajaxLength++;
       const axiosPar = {
         params: {
           api_key: this.tmdbApiKey,
@@ -356,7 +356,7 @@ new Vue({
             if (resp.data.page <= resp.data.total_pages) {
               this.buttonLoadShow = true;
               this.existSeriesPages = true;
-              this.seriesPages++;
+              this.seriesPages++ ;
             } else {
               this.existSeriesPages = false;
               this.buttonLoadShow = false;
@@ -539,8 +539,8 @@ new Vue({
     },
 
     reset(){
-      this.moviesPages = []
-      this.seriesPages = []
+      this.moviesPages = 1
+      this.seriesPages = 1
       this.moviesList = []
       this.seriesList = []
       this.tempFinalList = []
