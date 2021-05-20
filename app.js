@@ -356,7 +356,7 @@ new Vue({
             if (resp.data.page <= resp.data.total_pages) {
               this.buttonLoadShow = true;
               this.existSeriesPages = true;
-              this.seriesPages++ ;
+              this.seriesPages++;
             } else {
               this.existSeriesPages = false;
               this.buttonLoadShow = false;
@@ -378,10 +378,17 @@ new Vue({
           language: "it-IT"
         }
       };
-      
-      this.tempFinalList = this.moviesList.concat(this.seriesList);
-      this.tempFinalList.forEach(arrayinArray => {
-        arrayinArray.forEach(film => {
+
+      this.tempFinalList = [];
+      this.finaFullArray = [];
+
+      Array.prototype.push.apply(this.tempFinalList, this.moviesList.concat(this.seriesList));
+
+      for (let i = 0; i < this.tempFinalList.length; i++) {
+        const array = this.tempFinalList[i];
+        for (let j = 0; j < array.length; j++) {
+          const film = array[j];
+          this.finaFullArray.push(film);
           this.$set(film, "flags", []);
           this.$set(film, "fullStars", 0);
           this.$set(film, "emptyStars", 0);
@@ -391,22 +398,19 @@ new Vue({
           this.$set(film, "actorsExist", false);
           this.$set(film, "actors", []);
           this.$set(film, "genres", []);
-          this.finaFullArray.push(film);
           axios.get('https://api.themoviedb.org/3/' + film.searchType + "/" + film.id, apikey).then((resp) => {
             tempArray = resp.data.genres;
             tempArray.forEach(genre => {
               film.genres.push(genre.name);
               this.actorsShow(film);
             });
-
           });
 
-        });
+        }
+      }
 
-        this.finalList = this.finaFullArray;
-
-      });
-      Array.prototype.push.apply(this.finalListFiltered, this.finalList);
+      this.finalList = this.finaFullArray;
+      this.finalListFiltered = this.finalList;
       this.myFlagAssign();
       this.starAssign();
       this.loading = false;
@@ -502,8 +506,8 @@ new Vue({
 
 
     doSearch(param) {
-     
-      if(param == true){
+
+      if (param == true) {
         this.ajaxLength = 0;
         if (this.existMoviesPages) {
           this.makeAxiosSearch("movie", this.moviesPages);
@@ -514,8 +518,8 @@ new Vue({
         this.loading = true;
         this.selectedGenre = "";
         this.selectedType = "";
-        this.toReset = true
-      }else{
+        this.toReset = true;
+      } else {
         this.ajaxLength = 0;
         if (this.existMoviesPages) {
           this.makeAxiosSearch("movie", this.moviesPages);
@@ -526,11 +530,11 @@ new Vue({
         this.loading = true;
         this.selectedGenre = "";
         this.selectedType = "";
-        this.toReset = false
-        console.log("carica altro")
+        this.toReset = false;
+        console.log("carica altro");
       }
-      if(this.toReset){
-        this.reset()
+      if (this.toReset) {
+        this.reset();
       }
     },
 
@@ -538,19 +542,19 @@ new Vue({
       this.showSearch = true;
     },
 
-    reset(){
-      this.moviesPages = 1
-      this.seriesPages = 1
-      this.moviesList = []
-      this.seriesList = []
-      this.tempFinalList = []
-      this.finalList = []
+    reset() {
+      this.moviesPages = 1;
+      this.seriesPages = 1;
+      this.moviesList = [];
+      this.seriesList = [];
+      this.tempFinalList = [];
+      this.finalList = [];
       this.finaFullArray = [];
-      this.finalListGenres = []
-      this.finalListFiltered = []
-      this.resetDone = true
-      this.existMoviesPages = false
-      this.existSeriesPages = false
+      this.finalListGenres = [];
+      this.finalListFiltered = [];
+      this.resetDone = true;
+      this.existMoviesPages = false;
+      this.existSeriesPages = false;
     }
   },
 
